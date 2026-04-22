@@ -32,7 +32,7 @@ export const axiosBaseQuery =
         const refreshToken = getState().auth.refreshToken;
         if (refreshToken) {
           try {
-            const refreshResult = await axiosInstance.post('/auth/token/refresh/', {
+            const refreshResult = await axiosInstance.post('/v1/auth/token/refresh/', {
               refresh: refreshToken,
             });
             const newAccessToken = refreshResult.data.access;

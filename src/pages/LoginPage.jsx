@@ -34,8 +34,8 @@ function LoginPage() {
   };
 
   const handleGoogleLogin = () => {
-    const googleAuthUrl = `${import.meta.env.VITE_API_URL || ''}/api/auth/google/login/`;
-    window.location.href = googleAuthUrl;
+    const backendUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    window.location.href = `${backendUrl}/accounts/google/login/?next=${encodeURIComponent(window.location.origin)}`;
   };
 
   return (

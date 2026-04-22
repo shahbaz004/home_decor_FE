@@ -25,13 +25,13 @@ export const registerSchema = z
 
 export const addressSchema = z.object({
   full_name: z.string().min(2, 'Full name is required'),
-  phone: z.string().regex(/^[6-9]\d{9}$/, 'Enter a valid 10-digit Indian mobile number'),
+  phone: z.string().regex(/^03\d{9}$/, 'Enter a valid Pakistani mobile number (03XXXXXXXXX)'),
   address_line1: z.string().min(5, 'Street address is required'),
   address_line2: z.string().optional(),
   city: z.string().min(2, 'City is required'),
-  state: z.string().min(2, 'State is required'),
-  postal_code: z.string().regex(/^\d{6}$/, 'Enter a valid 6-digit PIN code'),
-  country: z.string().default('India'),
+  state: z.string().min(2, 'Province is required'),
+  postal_code: z.string().regex(/^\d{5}$/, 'Enter a valid 5-digit postal code'),
+  country: z.string().default('Pakistan'),
   is_default: z.boolean().optional(),
 });
 

@@ -35,9 +35,9 @@ function AdminDashboard() {
   const { data: topProductsData } = useGetTopProductsQuery({ limit: 5 });
   const { data: recentOrdersData, isLoading: ordersLoading } = useGetAdminOrdersQuery({ page: 1, page_size: 5, ordering: '-created_at' });
 
-  const s = stats || DEMO_STATS;
+  const s = stats?.data || DEMO_STATS;
   const chart = chartData?.data || DEMO_CHART;
-  const topProducts = topProductsData?.results || topProductsData || [];
+  const topProducts = topProductsData?.data || [];
   const recentOrders = recentOrdersData?.results || [];
 
   return (
@@ -118,18 +118,18 @@ function AdminDashboard() {
             {topProducts.length === 0 ? (
               <div className="p-5 text-center text-neutral-400 text-sm">No data available</div>
             ) : topProducts.map((p, i) => (
-              <div key={p.id || i} className="flex items-center gap-3 p-4">
+              <div key={p.product_id || p.id || i} className="flex items-center gap-3 p-4">
                 <span className="text-sm font-bold text-neutral-300 w-5">{i + 1}</span>
                 <img
-                  src={p.image || `https://picsum.photos/seed/${p.id}/40/40`}
-                  alt={p.name}
+                  src={p.image || `https://picsum.photos/seed/${p.product_id || p.id}/40/40`}
+                  alt={p.product_name || p.name}
                   className="w-10 h-10 rounded-lg object-cover"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-neutral-800 truncate">{p.name}</p>
-                  <p className="text-xs text-neutral-400">{p.sales_count || 0} sold</p>
+                  <p className="text-sm font-medium text-neutral-800 truncate">{p.product_name || p.name}</p>
+                  <p className="text-xs text-neutral-400">{p.total_sold || p.sales_count || 0} sold</p>
                 </div>
-                <p className="text-sm font-semibold text-neutral-800">{formatPrice(p.revenue || 0)}</p>
+                <p className="text-sm font-semibold text-neutral-800">{formatPrice(p.total_revenue || p.revenue || 0)}</p>
               </div>
             ))}
           </div>

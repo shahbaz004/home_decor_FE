@@ -16,14 +16,14 @@ const CATEGORIES_FALLBACK = [
 ];
 
 const TESTIMONIALS = [
-  { id: 1, name: 'Priya Sharma', city: 'Mumbai', rating: 5, text: 'Absolutely love my terracotta vase set! The quality is exceptional and delivery was super fast.', image: 'https://picsum.photos/seed/u1/60/60' },
-  { id: 2, name: 'Rahul Mehta', city: 'Bengaluru', rating: 5, text: 'Transformed my living room completely. Every piece tells a story and feels artisanal.', image: 'https://picsum.photos/seed/u2/60/60' },
-  { id: 3, name: 'Anjali Patel', city: 'Delhi', rating: 5, text: 'Beautiful packaging, gorgeous products. My home feels like a warm sanctuary now.', image: 'https://picsum.photos/seed/u3/60/60' },
+  { id: 1, name: 'Ayesha Malik', city: 'Karachi', rating: 5, text: 'Absolutely love my handcrafted vase set! The quality is exceptional and delivery was super fast.', image: 'https://picsum.photos/seed/u1/60/60' },
+  { id: 2, name: 'Bilal Ahmed', city: 'Lahore', rating: 5, text: 'Transformed my living room completely. Every piece tells a story and feels truly artisanal.', image: 'https://picsum.photos/seed/u2/60/60' },
+  { id: 3, name: 'Fatima Khan', city: 'Islamabad', rating: 5, text: 'Beautiful packaging, gorgeous products. My home feels like a warm sanctuary now.', image: 'https://picsum.photos/seed/u3/60/60' },
 ];
 
 const WHY_US = [
   { icon: Shield, title: 'Quality Assured', desc: 'Every product handpicked and quality-tested before dispatch.' },
-  { icon: Truck, title: 'Free Shipping', desc: 'Complimentary shipping on all orders above ₹2,000.' },
+  { icon: Truck, title: 'Free Shipping', desc: 'Complimentary shipping on all orders above Rs. 2,000.' },
   { icon: RefreshCcw, title: 'Easy Returns', desc: '30-day hassle-free return policy on all products.' },
   { icon: Headphones, title: '24/7 Support', desc: 'Our decor experts are always here to help you.' },
 ];
@@ -48,8 +48,8 @@ function HomePage() {
   const { data: featuredData, isLoading: featuredLoading } = useGetFeaturedProductsQuery();
   const { data: categoriesData } = useGetCategoriesQuery();
 
-  const featuredProducts = featuredData?.results || featuredData || [];
-  const categories = categoriesData?.results || categoriesData || CATEGORIES_FALLBACK;
+  const featuredProducts = featuredData?.data || featuredData?.results || [];
+  const categories = categoriesData?.results || CATEGORIES_FALLBACK;
 
   return (
     <div className="overflow-hidden">

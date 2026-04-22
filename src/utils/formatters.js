@@ -1,13 +1,12 @@
 import { format, formatDistanceToNow, parseISO } from 'date-fns';
 
-export function formatPrice(amount, currency = 'INR') {
+export function formatPrice(amount) {
   if (amount === null || amount === undefined) return '—';
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency,
+  const num = new Intl.NumberFormat('en-PK', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(amount);
+  return `Rs. ${num}`;
 }
 
 export function formatDate(date, formatStr = 'MMM dd, yyyy') {
@@ -46,7 +45,7 @@ export function formatOrderStatus(status) {
 
 export function formatNumber(num) {
   if (num === null || num === undefined) return '0';
-  return new Intl.NumberFormat('en-IN').format(num);
+  return new Intl.NumberFormat('en-PK').format(num);
 }
 
 export function formatPercentage(value, total) {

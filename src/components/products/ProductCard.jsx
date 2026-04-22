@@ -22,13 +22,23 @@ function ProductCard({ product, className }) {
   if (!product) return null;
 
   const {
-    id, name, slug, price, sale_price: salePrice, images, category,
-    rating, review_count: reviewCount, stock, is_featured: isFeatured,
+    id, name, slug,
+    base_price: basePrice, price: legacyPrice,
+    sale_price: salePrice, effective_price: effectivePrice, discount_percentage: discountPct,
+    images, primary_image: primaryImageObj,
+    category, category_name: categoryName,
+    average_rating: avgRating, rating: legacyRating,
+    review_count: reviewCount, stock, is_featured: isFeatured,
   } = product;
 
-  const primaryImage = images?.[0]?.url || images?.[0] || `https://picsum.photos/seed/${id}/400/400`;
-  const secondaryImage = images?.[1]?.url || images?.[1];
-  const discountPercent = salePrice ? Math.round(((price - salePrice) / price) * 100) : 0;
+  const price = basePrice || legacyPrice || 0;
+  const rating = avgRating ?? legacyRating;
+
+  const resolveImageUrl = (img) => img?.image || img?.url || (typeof img === 'string' ? img : null);
+  const primaryImage = resolveImageUrl(images?.[0]) || resolveImageUrl(primaryImageObj) || `https://picsum.photos/seed/${id}/400/400`;
+  const secondaryImage = resolveImageUrl(images?.[1]) || null;
+
+  const discountPercent = discountPct ?? (salePrice && price ? Math.round(((price - salePrice) / price) * 100) : 0);
   const inStock = stock > 0;
 
   const handleWishlist = async (e) => {
@@ -149,9 +159,9 @@ function ProductCard({ product, className }) {
 
         {/* Product Info */}
         <div className="p-4">
-          {category && (
+          {(categoryName || category) && (
             <p className="text-xs text-primary-600 font-medium uppercase tracking-wide mb-1.5">
-              {typeof category === 'object' ? category.name : category}
+              {categoryName || (typeof category === 'object' ? category.name : category)}
             </p>
           )}
 

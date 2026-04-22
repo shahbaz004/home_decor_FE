@@ -62,12 +62,16 @@ function ProductDetailPage() {
   }
 
   const {
-    id, name, description, price, sale_price: salePrice, images, category,
-    rating, review_count: reviewCount, stock, variants, materials, dimensions,
-    weight, sku, is_featured: isFeatured,
+    id, name, description,
+    base_price: basePrice, sale_price: salePrice, discount_percentage: discountPct,
+    images, primary_image: primaryImageObj,
+    category, average_rating: rating, review_count: reviewCount,
+    stock, variants, materials, dimensions, weight, sku, is_featured: isFeatured,
   } = product;
 
-  const discountPercent = salePrice ? Math.round(((price - salePrice) / price) * 100) : 0;
+  const price = basePrice || 0;
+  const discountPercent = discountPct ?? (salePrice && price ? Math.round(((price - salePrice) / price) * 100) : 0);
+  const productImages = images?.length ? images : (primaryImageObj ? [primaryImageObj] : []);
   const inStock = stock > 0;
   const lowStock = stock > 0 && stock <= 5;
 
@@ -102,7 +106,7 @@ function ProductDetailPage() {
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 mb-16">
           {/* Image Gallery */}
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <ProductImageGallery images={images} productName={name} />
+            <ProductImageGallery images={productImages} productName={name} />
           </div>
 
           {/* Product Info */}
@@ -220,7 +224,7 @@ function ProductDetailPage() {
             {/* Delivery Info */}
             <div className="border border-neutral-100 rounded-2xl divide-y divide-neutral-100">
               {[
-                { icon: Truck, title: 'Free Delivery', desc: 'On orders above ₹2,000. Expected in 5-7 days.' },
+                { icon: Truck, title: 'Free Delivery', desc: 'On orders above Rs. 2,000. Expected in 5-7 days.' },
                 { icon: RefreshCcw, title: 'Easy Returns', desc: '30-day return policy. No questions asked.' },
                 { icon: Shield, title: 'Authentic Products', desc: 'All products are handpicked and quality assured.' },
               ].map(({ icon: Icon, title, desc }) => (

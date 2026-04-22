@@ -123,19 +123,19 @@ function Footer() {
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-primary-400 mt-0.5 flex-shrink-0" />
                 <span className="text-sm text-neutral-400">
-                  123 Artisan Lane, Bandra West, Mumbai 400050
+                  Shop 12, Zamzama Commercial Lane, Karachi 75600
                 </span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="w-4 h-4 text-primary-400 flex-shrink-0" />
-                <a href="tel:+919876543210" className="text-sm text-neutral-400 hover:text-primary-400 transition-colors">
-                  +91 98765 43210
+                <a href="tel:+923001234567" className="text-sm text-neutral-400 hover:text-primary-400 transition-colors">
+                  +92 300 1234567
                 </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-primary-400 flex-shrink-0" />
-                <a href="mailto:hello@artisanhome.in" className="text-sm text-neutral-400 hover:text-primary-400 transition-colors">
-                  hello@artisanhome.in
+                <a href="mailto:hello@artisanhome.pk" className="text-sm text-neutral-400 hover:text-primary-400 transition-colors">
+                  hello@artisanhome.pk
                 </a>
               </li>
             </ul>
@@ -178,12 +178,12 @@ function Footer() {
               Terms
             </Link>
             <span className="text-xs text-neutral-500">
-              Made with love in India 🇮🇳
+              Made with love in Pakistan 🇵🇰
             </span>
           </div>
           {/* Payment Icons Placeholder */}
           <div className="flex items-center gap-2">
-            {['Visa', 'MC', 'UPI', 'GPay'].map((pay) => (
+            {['Visa', 'MC', 'JazzCash', 'EasyPaisa'].map((pay) => (
               <span
                 key={pay}
                 className="px-2 py-1 text-xs bg-neutral-800 text-neutral-400 rounded border border-neutral-700"

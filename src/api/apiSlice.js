@@ -57,11 +57,11 @@ export const apiSlice = createApi({
       providesTags: ['Product'],
     }),
     getCategories: builder.query({
-      query: () => ({ url: '/categories/' }),
+      query: () => ({ url: '/products/categories/' }),
       providesTags: ['Category'],
     }),
     getCategory: builder.query({
-      query: (slug) => ({ url: `/categories/${slug}/` }),
+      query: (slug) => ({ url: `/products/categories/${slug}/` }),
       providesTags: (result, error, slug) => [{ type: 'Category', id: slug }],
     }),
 
@@ -138,14 +138,14 @@ export const apiSlice = createApi({
 
     // ─── REVIEWS ───────────────────────────────────────────
     getProductReviews: builder.query({
-      query: ({ productId, ...params }) => ({ url: `/products/${productId}/reviews/`, params }),
+      query: ({ productId, ...params }) => ({ url: '/reviews/', params: { product_id: productId, ...params } }),
       providesTags: (result, error, { productId }) => [{ type: 'Review', id: productId }],
     }),
     createReview: builder.mutation({
       query: ({ productId, ...data }) => ({
-        url: `/products/${productId}/reviews/`,
+        url: '/reviews/',
         method: 'POST',
-        data,
+        data: { product: productId, ...data },
       }),
       invalidatesTags: (result, error, { productId }) => [{ type: 'Review', id: productId }],
     }),
@@ -170,67 +170,70 @@ export const apiSlice = createApi({
 
     // ─── ADMIN ─────────────────────────────────────────────
     getAdminStats: builder.query({
-      query: () => ({ url: '/admin/stats/' }),
+      query: () => ({ url: '/analytics/dashboard/' }),
       providesTags: ['AdminStats'],
     }),
     getSalesChart: builder.query({
-      query: (params) => ({ url: '/admin/sales-chart/', params }),
+      query: (params) => ({ url: '/analytics/sales-chart/', params }),
       providesTags: ['AdminStats'],
     }),
     getTopProducts: builder.query({
-      query: (params) => ({ url: '/admin/top-products/', params }),
+      query: (params) => ({ url: '/analytics/top-products/', params }),
       providesTags: ['AdminStats'],
     }),
     getAdminOrders: builder.query({
-      query: (params) => ({ url: '/admin/orders/', params }),
+      query: (params) => ({ url: '/orders/', params }),
       providesTags: ['Order'],
     }),
     updateOrderStatus: builder.mutation({
-      query: ({ id, ...data }) => ({ url: `/admin/orders/${id}/status/`, method: 'PATCH', data }),
+      query: ({ id, ...data }) => ({ url: `/orders/${id}/update_status/`, method: 'PATCH', data }),
       invalidatesTags: ['Order'],
     }),
     getAdminProducts: builder.query({
-      query: (params) => ({ url: '/admin/products/', params }),
+      query: (params) => ({ url: '/products/', params }),
       providesTags: ['Product'],
     }),
     createProduct: builder.mutation({
-      query: (data) => ({ url: '/admin/products/', method: 'POST', data }),
+      query: (data) => ({ url: '/products/', method: 'POST', data }),
       invalidatesTags: ['Product'],
     }),
     updateProduct: builder.mutation({
-      query: ({ id, ...data }) => ({ url: `/admin/products/${id}/`, method: 'PUT', data }),
+      query: ({ id, ...data }) => ({ url: `/products/${id}/`, method: 'PUT', data }),
       invalidatesTags: ['Product'],
     }),
     deleteProduct: builder.mutation({
-      query: (id) => ({ url: `/admin/products/${id}/`, method: 'DELETE' }),
+      query: (id) => ({ url: `/products/${id}/`, method: 'DELETE' }),
       invalidatesTags: ['Product'],
     }),
     getCustomers: builder.query({
-      query: (params) => ({ url: '/admin/customers/', params }),
+      query: (params) => ({ url: '/auth/customers/', params }),
       providesTags: ['Customer'],
     }),
     getAdminCoupons: builder.query({
-      query: (params) => ({ url: '/admin/coupons/', params }),
+      query: (params) => ({ url: '/coupons/admin/', params }),
       providesTags: ['Coupon'],
     }),
     createCoupon: builder.mutation({
-      query: (data) => ({ url: '/admin/coupons/', method: 'POST', data }),
+      query: (data) => ({ url: '/coupons/admin/', method: 'POST', data }),
       invalidatesTags: ['Coupon'],
     }),
     updateCoupon: builder.mutation({
-      query: ({ id, ...data }) => ({ url: `/admin/coupons/${id}/`, method: 'PUT', data }),
+      query: ({ id, ...data }) => ({ url: `/coupons/admin/${id}/`, method: 'PUT', data }),
       invalidatesTags: ['Coupon'],
     }),
     deleteCoupon: builder.mutation({
-      query: (id) => ({ url: `/admin/coupons/${id}/`, method: 'DELETE' }),
+      query: (id) => ({ url: `/coupons/admin/${id}/`, method: 'DELETE' }),
       invalidatesTags: ['Coupon'],
     }),
     getAdminReviews: builder.query({
-      query: (params) => ({ url: '/admin/reviews/', params }),
+      query: (params) => ({ url: '/reviews/', params }),
       providesTags: ['Review'],
     }),
     updateReviewStatus: builder.mutation({
-      query: ({ id, ...data }) => ({ url: `/admin/reviews/${id}/`, method: 'PATCH', data }),
+      query: ({ id, status }) => ({
+        url: `/reviews/${id}/${status === 'approved' ? 'approve' : 'reject'}/`,
+        method: 'POST',
+      }),
       invalidatesTags: ['Review'],
     }),
   }),

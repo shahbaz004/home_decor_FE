@@ -27,12 +27,12 @@ export function useAuth() {
       const result = await loginMutation(credentials).unwrap();
       dispatch(
         setCredentials({
-          user: result.user,
-          accessToken: result.access,
-          refreshToken: result.refresh,
+          user: result.data.user,
+          accessToken: result.data.access,
+          refreshToken: result.data.refresh,
         })
       );
-      toast.success(`Welcome back, ${result.user?.first_name || 'there'}!`);
+      toast.success(`Welcome back, ${result.data.user?.first_name || 'there'}!`);
       return { success: true };
     } catch (error) {
       const message = error?.data?.detail || error?.data?.non_field_errors?.[0] || 'Login failed';

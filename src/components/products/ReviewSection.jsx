@@ -48,7 +48,7 @@ function ReviewCard({ review }) {
           {review.images.map((img, i) => (
             <img
               key={i}
-              src={typeof img === 'string' ? img : img.url}
+              src={typeof img === 'string' ? img : (img.image || img.url)}
               alt={`Review photo ${i + 1}`}
               className="w-14 h-14 rounded-lg object-cover border border-neutral-200"
             />

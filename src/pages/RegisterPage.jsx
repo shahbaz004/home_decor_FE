@@ -37,13 +37,13 @@ function RegisterPage() {
         last_name: data.last_name,
         email: data.email,
         password: data.password,
-        confirm_password: data.confirm_password,
+        password_confirm: data.confirm_password,
       }).unwrap();
 
       dispatch(setCredentials({
-        user: result.user,
-        accessToken: result.access,
-        refreshToken: result.refresh,
+        user: result.data.user,
+        accessToken: result.data.access,
+        refreshToken: result.data.refresh,
       }));
 
       toast.success(`Welcome to ArtisanHome, ${data.first_name}!`);
