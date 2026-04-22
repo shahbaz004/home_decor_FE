@@ -17,12 +17,12 @@ function WishlistPage() {
   const { addToCart } = useCart();
   const [removingId, setRemovingId] = useState(null);
 
-  const items = data?.results || data || [];
+  const items = data?.data || data?.results || [];
 
-  const handleRemove = async (productId) => {
-    setRemovingId(productId);
+  const handleRemove = async (itemId) => {
+    setRemovingId(itemId);
     try {
-      await removeFromWishlist(productId).unwrap();
+      await removeFromWishlist(itemId).unwrap();
       toast.success('Removed from wishlist');
     } catch {
       toast.error('Failed to remove item');
@@ -32,8 +32,8 @@ function WishlistPage() {
   };
 
   const handleMoveToCart = async (item) => {
-    await addToCart(item.product || item);
-    await handleRemove(item.product?.id || item.id);
+    await addToCart(item.product_detail || item);
+    await handleRemove(item.id);
   };
 
   return (
@@ -77,10 +77,10 @@ function WishlistPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
             <AnimatePresence>
               {items.map((item) => {
-                const product = item.product || item;
+                const product = item.product_detail || item;
                 return (
                   <motion.div
-                    key={product.id}
+                    key={item.id}
                     layout
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
@@ -90,7 +90,7 @@ function WishlistPage() {
                     <Link to={`/products/${product.slug}`} className="block">
                       <div className="aspect-square overflow-hidden bg-neutral-50">
                         <img
-                          src={product.images?.[0]?.url || product.image || `https://picsum.photos/seed/${product.id}/300/300`}
+                          src={product.primary_image?.image || product.images?.[0]?.image || product.images?.[0]?.url || `https://picsum.photos/seed/${product.id}/300/300`}
                           alt={product.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
@@ -104,17 +104,17 @@ function WishlistPage() {
                         </h3>
                       </Link>
 
-                      {product.rating !== undefined && (
-                        <StarRating value={product.rating} readonly size="xs" className="mb-2" />
+                      {(product.average_rating ?? product.rating) !== undefined && (product.average_rating ?? product.rating) !== null && (
+                        <StarRating value={product.average_rating ?? product.rating} readonly size="xs" className="mb-2" />
                       )}
 
                       <div className="flex items-center gap-2 mb-3">
                         <span className="font-bold text-neutral-800">
-                          {formatPrice(product.sale_price || product.price)}
+                          {formatPrice(product.effective_price || product.sale_price || product.base_price)}
                         </span>
                         {product.sale_price && (
                           <span className="text-xs text-neutral-400 line-through">
-                            {formatPrice(product.price)}
+                            {formatPrice(product.base_price)}
                           </span>
                         )}
                       </div>
@@ -131,8 +131,8 @@ function WishlistPage() {
                         <Button
                           size="icon"
                           variant="ghost"
-                          onClick={() => handleRemove(product.id)}
-                          isLoading={removingId === product.id}
+                          onClick={() => handleRemove(item.id)}
+                          isLoading={removingId === item.id}
                           className="text-red-400 hover:text-red-600 hover:bg-red-50 flex-shrink-0"
                         >
                           <Trash2 className="w-4 h-4" />
