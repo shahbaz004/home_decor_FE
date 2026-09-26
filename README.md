@@ -18,7 +18,7 @@ A modern e-commerce frontend for home decor products, built with React, Redux To
 
 - **Node.js:** v18.x or higher
 - **npm:** v10.x or higher
-- **Backend:** The Django backend must be running (see [backend repo](https://github.com/shahbaz004/home_decor))
+- **Backend:** The Django backend must be running on port 5000 (see [API.md](./API.md) for API contract)
 
 ## Installation
 
@@ -59,7 +59,7 @@ To run the full stack locally:
 1. **Start the backend** (in a separate terminal):
    ```bash
    cd path/to/backend
-   python manage.py runserver 8000
+   python manage.py runserver 5000
    ```
 
 2. **Start the frontend** (in this directory):
@@ -69,7 +69,9 @@ To run the full stack locally:
 
 3. Open http://localhost:3000 in your browser
 
-The frontend will automatically proxy API requests to the backend at `http://localhost:8000/api`.
+The frontend will automatically proxy API requests to the backend at `http://localhost:5000/api`.
+
+> **Note:** See [API.md](./API.md) for the complete API contract that the backend must implement.
 
 ### Production Build
 
@@ -91,7 +93,7 @@ Create a `.env` file in the root directory (use `.env.example` as a template):
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `VITE_API_URL` | Backend API base URL | `http://localhost:8000` |
+| `VITE_API_URL` | Backend API base URL | `http://localhost:5000` |
 
 **Note:** Environment variables must be prefixed with `VITE_` to be accessible in the application.
 
@@ -152,9 +154,11 @@ src/
 
 ## API Integration
 
-The frontend communicates with the Django backend through a proxy configured in `vite.config.js`. All requests to `/api/*` are automatically proxied to the backend server.
+The frontend communicates with the Django backend through a proxy configured in `vite.config.js`. All requests to `/api/*` are automatically proxied to the backend server (default: `http://localhost:5000`).
 
 API endpoints are managed using RTK Query for efficient data fetching and caching.
+
+**📋 Complete API documentation:** See [API.md](./API.md) for the full API contract including all endpoints, request/response schemas, and data models that the backend must implement.
 
 ## Troubleshooting
 
@@ -163,9 +167,10 @@ API endpoints are managed using RTK Query for efficient data fetching and cachin
 - Delete `node_modules` and reinstall: `rm -rf node_modules package-lock.json && npm install`
 
 ### API requests fail
-- Verify the backend is running on the configured port (default: 8000)
+- Verify the backend is running on the configured port (default: 5000)
 - Check the `VITE_API_URL` in your `.env` file
 - Check browser console for CORS errors
+- Ensure the backend implements the API contract in [API.md](./API.md)
 
 ### Build errors
 - Clear Vite cache: `rm -rf node_modules/.vite`
